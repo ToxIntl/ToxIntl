@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">TOX INTL | Digital Transformation Agency</title>
+    <!-- Tailwind CSS CDN MUST be loaded first -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Tailwind Configuration MUST run after the CDN script -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#0066FF',
+                            dark: '#0B1120',
+                            light: '#F8FAFC',
+                            text: '#1F2937',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL & ANIMATIONS --- */
+        body { font-family: 'Inter', sans-serif; }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-100 { transition-delay: 0.1s; }
+        .reveal-delay-200 { transition-delay: 0.2s; }
+        .reveal-delay-300 { transition-delay: 0.3s; }
+        .reveal-delay-400 { transition-delay: 0.4s; }
+        .reveal-delay-500 { transition-delay: 0.5s; }
+
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        /* --- CONTACT PAGE STYLES --- */
+        .bg-contact-light-blue { background-color: #F5F8FF; }
+
+        /* Updated Pill Buttons */
+        .btn-pill {
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6B7280; /* Gray text for inactive */
+            background-color: transparent;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-pill:hover {
+            color: #374151;
+        }
+
+        /* Active State - Matches image_584f42.png & image_584f7d.png */
+        .btn-pill.active {
+            background-color: white;
+            color: #111827; /* Dark text */
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Subtle shadow */
+        }
+
+        /* Form Input Styling - Matches image_584459.jpg */
+        .form-input-clean {
+            width: 100%;
+            padding: 14px 16px; /* Slightly taller */
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px; /* Slightly more rounded */
+            outline: none;
+            color: #1F2937;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input-clean:focus {
+            border-color: #0066FF; /* Brand blue focus */
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+        }
+
+        .form-input-clean-prefix {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            border-right: none;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding-left: 16px;
+            padding-right: 16px;
+            display: flex;
+            align-items: center;
+            color: #6B7280;
+        }
+
+        /* Checkbox specific */
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-top: 4px;
+        }
+
+        /* Accordion Animation */
+        .accordion-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s ease;
+        }
+        .accordion-content.active {
+            opacity: 1;
+        }
+
+        /* Custom Styles for Service/Process Icons/Cards */
+        .service-icon-bg {
+            background-color: #E6F5E8; /* Light green/mint color */
+            color: #4CBB17; /* Darker green color */
+        }
+        .process-card-bg {
+            background-color: #F8FAFC; /* Light background for process cards */
+        }
+        .process-icon-bg {
+            background-color: #0B1120; /* Dark navy background for icons */
+            color: white;
+        }
+        .process-heading-text {
+            color: #1F2937; /* Dark text color for headings */
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-text antialiased overflow-x-hidden bg-white">
+
+    <!-- NAVIGATION BAR -->
+    <nav class="fixed w-full z-50 transition-all duration-300 border-b bg-white/90 backdrop-blur-md border-gray-100" id="main-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex-shrink-0" onclick="router.navigate('home')">
+                    <div class="flex items-center gap-2">
+                        <img src="img/Tox_Logo.png" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/150x120/0066FF/ffffff/png?text=TOX';"
+                             alt="TOX INTL Logo" class="w-[150px] h-[120px] object-contain" id="nav-logo">
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center" id="desktop-links">
+                    <a href="#home" class="nav-link text-base font-medium text-gray-600 hover:text-brand-blue" onclick="router.navigate('home')">Home</a>
+                    <a href="#about" class="nav-link text-base font-medium text-gray-600 hover:text-brand-blue" onclick="router.navigate('about')">About Us</a>
+                    <a href="#services" class="nav-link text-base font-medium text-gray-600 hover:text-brand-blue" onclick="router.navigate('services')">Services</a>
+                    <a href="#works" class="nav-link text-base font-medium text-gray-600 hover:text-brand-blue" onclick="router.navigate('works')">Our Works</a>
+                    <a href="#contact" class="nav-link text-base font-medium text-gray-600 hover:text-brand-blue" onclick="router.navigate('contact')">Contact</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <a href="#contact" onclick="router.navigate('contact')" class="bg-brand-blue hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-base font-semibold transition shadow-lg shadow-blue-500/30">Contact Us</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" id="mobile-menu-btn" class="text-gray-600 hover:text-brand-blue">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t bg-white border-gray-100">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100" onclick="router.navigate('home'); toggleMobileMenu()">Home</a>
+                <a href="#about" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100" onclick="router.navigate('about'); toggleMobileMenu()">About Us</a>
+                <a href="#services" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100" onclick="router.navigate('services'); toggleMobileMenu()">Services</a>
+                <a href="#works" class="mobile-nav-link block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100" onclick="router.navigate('works'); toggleMobileMenu()">Our Works</a>
+                <a href="#contact" class="mobile-nav-link block px-3 py-2 text-base font-medium text-brand-blue hover:bg-gray-100" onclick="router.navigate('contact'); toggleMobileMenu()">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+    <div class="h-20"></div> <!-- Spacer -->
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="app-content">
+
+        <!-- --- HOME PAGE --- -->
+        <div id="page-home" class="page-content active">
+             <div class="fade-in">
+                <!-- Hero -->
+                <section class="py-20 md:py-32 relative overflow-hidden text-center reveal-on-scroll">
+                    <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-30 pointer-events-none"></div>
+                    <div class="max-w-7xl mx-auto px-4 relative z-10">
+                        <div class="flex justify-center mb-6 reveal-on-scroll reveal-delay-100">
+                            <span class="inline-block py-2 px-6 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-700 shadow-md">More than just design</span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6 reveal-on-scroll reveal-delay-200">We Create Open Experiences</h1>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8 reveal-on-scroll reveal-delay-300">Designing, building, and scaling digital products and brands that thrive in today's market. From startups to enterprises, we craft solutions that drive real impact.</p>
+                        <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-12 text-sm font-medium text-gray-700 max-w-4xl mx-auto reveal-on-scroll reveal-delay-400">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-blue"></i> Development</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-blue"></i> Design</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-blue"></i> Digital Marketing</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-blue"></i> SaaS Product Innovation</span>
+                        </div>
+                        <div class="flex flex-col sm:flex-row justify-center gap-4 reveal-on-scroll reveal-delay-500">
+                            <a href="#contact" onclick="router.navigate('contact')" class="bg-gray-900 text-white px-8 py-3.5 rounded-full font-medium hover:bg-black transition w-full sm:w-auto">Work With Us</a>
+                            <a href="#works" onclick="router.navigate('works')" class="bg-white border border-gray-200 text-gray-700 px-8 py-3.5 rounded-full font-medium hover:bg-gray-50 transition w-full sm:w-auto">Explore Our Products</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Why Choose Us -->
+                <section class="py-20 bg-white reveal-on-scroll">
+                    <div class="max-w-7xl mx-auto px-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12 items-start">
+                            <div class="md:col-span-1">
+                                <div class="flex items-center gap-4 mb-6 md:mb-0">
+                                    <div class="text-brand-blue text-4xl">
+                                    </div>
+                                    <h2 class="text-3xl font-bold leading-tight">Why Choose<br>TOX INTL?</h2>
+                                </div>
+                            </div>
+                            <div class="md:col-span-1">
+                                <h3 class="text-2xl font-bold leading-snug mb-4">We're not an agency. We're your team.</h3>
+                                <p class="text-gray-500 text-lg">We believe in <strong> openness, collaboration, and building with a founder's mindset </strong>. That's why clients trust us to take ideas from the <strong> first sketch </strong> to market launch.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div class="md:col-span-1 h-[450px] rounded-3xl overflow-hidden shadow-2xl reveal-on-scroll">
+                                <img src="img/Tox_Logo_White.png" 
+                                     alt="Visual Content Strategy Meeting" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="md:col-span-1 grid grid-cols-2 gap-6">
+                                <div class="p-6 rounded-2xl border border-gray-100 shadow-sm transition duration-300 reveal-on-scroll reveal-delay-100">
+                                    <h3 class="text-xl font-bold mb-3">All-in-One Expertise</h3>
+                                    <p class="text-gray-500 text-sm">Design, Development, Marketing under one roof.</p>
+                                </div>
+                                <div class="p-6 rounded-2xl border border-gray-100 shadow-sm transition duration-300 reveal-on-scroll reveal-delay-200">
+                                    <h3 class="text-xl font-bold mb-3">Startup-Friendly Approach</h3>
+                                    <p class="text-gray-500 text-sm">We help founders pitch, validate, and launch their products faster.</p>
+                                </div>
+                                <div class="p-6 rounded-2xl border border-gray-100 shadow-sm transition duration-300 reveal-on-scroll reveal-delay-300">
+                                    <h3 class="text-xl font-bold mb-3">SaaS DNA</h3>
+                                    <p class="text-gray-500 text-sm">We're building our own SaaS products, so we understand the challenges of scaling digital solutions.</p>
+                                </div>
+                                <div class="p-6 rounded-2xl border border-gray-100 shadow-sm transition duration-300 reveal-on-scroll reveal-delay-400">
+                                    <h3 class="text-xl font-bold mb-3">Culture Over Contracts</h3>
+                                    <p class="text-sm text-gray-500">We integrate with your team, not just deliver projects.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Impactful Projects (UPDATED TO MATCH IMAGE) -->
+                <section class="py-20 bg-gray-50 reveal-on-scroll">
+                    <div class="max-w-7xl mx-auto px-4">
+                        <div class="text-center mb-10">
+                            <h2 class="text-4xl font-bold text-gray-900 mb-4">Impactful Projects</h2>
+                            <p class="text-gray-500 max-w-2xl mx-auto">We help founders, startups, and businesses turn their ideas into reality through strategy, design, and collaboration.</p>
+                        </div>
+
+                        <!-- Project Card -->
+                        <div class="bg-white rounded-3xl overflow-hidden shadow-2xl mb-12 border border-gray-100">
+                            <div class="grid grid-cols-1 md:grid-cols-2">
+
+                                <!-- Left Half: Project Details -->
+                                <div class="p-8 md:p-12 flex flex-col justify-between">
+                                    <div class="space-y-4">
+                                        <!-- Project Logo/Icon -->
+                                        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center mb-4">
+                                            <i class="fa-solid fa-car text-white text-xl"></i>
+                                        </div>
+
+                                        <h3 class="text-2xl font-bold text-gray-900">Project Name</h3>
+                                        <p class="text-gray-500 mb-8 leading-relaxed">We help founders, startups, and businesses turn their ideas into reality through strategy, design, and collaboration.</p>
+                                    </div>
+
+                                    <!-- Meta Info -->
+                                    <div class="grid grid-cols-2 gap-4 mt-8 text-sm">
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-700 mb-1">Live Site</h4>
+                                            <p class="text-brand-blue font-medium">www.example.com</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-700 mb-1">Industry</h4>
+                                            <p class="text-gray-900 font-medium">Real Estate</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- CTA -->
+                                    <a href="#project" onclick="router.navigate('project')" class="self-start mt-8 bg-gray-900 text-white px-8 py-3 rounded-full hover:bg-black/80 transition">View Project</a>
+                                </div>
+
+                                <!-- Right Half: Visual Mockup (Black Background) -->
+                                <div class="bg-black relative h-96 md:h-auto overflow-hidden flex items-center justify-center p-12">
+                                    <div class="text-white text-center">
+                                        <h3 class="text-4xl font-bold mb-2">GLOWSTAND</h3>
+                                        <p class="text-gray-500 text-sm">DESANT BLACK CORNER</p>
+                                        <!-- Mockup element using CSS glows -->
+                                        <div class="relative mt-8 w-64 h-36 border-4 border-white rounded-lg mx-auto shadow-2xl" 
+                                             style="box-shadow: 0 0 20px #0066FF, 0 0 40px #800080; border-image: linear-gradient(to right, #0066FF, #800080, #FF0066) 1;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Logo Strip -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 py-8 items-center opacity-70">
+                            <!-- Placeholder Logos (Using text placeholders since images aren't provided) -->
+                            <div class="text-gray-400 font-bold text-xl text-center">QNB</div>
+                            <div class="text-gray-400 font-bold text-xl text-center">BMW</div>
+                            <div class="text-gray-400 font-bold text-xl text-center">Delivery Hero</div>
+                            <div class="text-gray-400 font-bold text-xl text-center">Media Markt</div>
+                            <div class="text-gray-400 font-bold text-xl text-center">BAYER</div>
+                            <div class="text-gray-400 font-bold text-xl text-center">amazon</div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End of Impactful Proje
